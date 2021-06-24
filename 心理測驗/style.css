@@ -1,0 +1,13 @@
+html {
+    height: 100%;
+}
+
+body {
+    text-align: center;
+    background-image: url(background.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: 800px;
+    font-weight: bold;
+}
