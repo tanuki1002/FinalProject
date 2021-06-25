@@ -4,13 +4,30 @@ let imgMountain, imgMain, imgEnemy;
 //ctx - HTML5 Canvas用
 //currentImgMainX, currentImgMainY - 決定主角所在座標
 //imgMountain, imgMain, imgEnemy - 障礙物, 主角, 敵人的圖片物件
-const gridLength = 200;
+const gridLength = 150;
 //網頁載入完成後初始化動作
 $(function() {
     mapArray = [ //0-可走,1-障礙,2-終點,3-敵人
-        [0, 1, 1],
-        [0, 0, 0],
-        [3, 1, 2]
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0],
+        [0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
+        [1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1],
+        [0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0],
+        [0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0],
+        [0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
+        [0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0],
+        [0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+        [0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0],
+        [0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
+        [0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2, 3]
     ];
     ctx = $("#myCanvas")[0].getContext("2d");
 
@@ -21,21 +38,21 @@ $(function() {
         "y": 0
     };
 
-    imgMain.onload = function() {
+    imgMain.onload = function() { //切割影像 drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
         ctx.drawImage(imgMain, 0, 0, 80, 130, currentImgMain.x, currentImgMain.y, gridLength, gridLength);
     }
     imgMountain = new Image();
     imgMountain.src = "images/material.png";
     imgEnemy = new Image();
-    imgEnemy.src = "images/Enemy.png";
+    imgEnemy.src = "images/meow.png";
     imgMountain.onload = function() {
         imgEnemy.onload = function() {
             for (var x in mapArray) {
                 for (var y in mapArray[x]) {
                     if (mapArray[x][y] == 1) {
-                        ctx.drawImage(imgMountain, 32, 65, 32, 32, y * gridLength, x * gridLength, gridLength, gridLength);
+                        ctx.drawImage(imgMountain, 130, 190, 32, 32, y * gridLength, x * gridLength, gridLength, gridLength);
                     } else if (mapArray[x][y] == 3) {
-                        ctx.drawImage(imgEnemy, 7, 40, 104, 135, y * gridLength, x * gridLength, gridLength, gridLength);
+                        ctx.drawImage(imgEnemy, 7, 40, 170, 135, y * gridLength, x * gridLength, gridLength, gridLength);
                     }
                 }
             }
@@ -90,7 +107,7 @@ $(document).on("keydown", function(event) {
     }
 
     //確認目標位置不會超過地圖
-    if (targetImg.x <= 400 && targetImg.x >= 0 && targetImg.y <= 400 && targetImg.y >= 0) {
+    if (targetImg.x <= 3000 && targetImg.x >= 0 && targetImg.y <= 3000 && targetImg.y >= 0) {
         targetBlock.x = targetImg.y / gridLength;
         targetBlock.y = targetImg.x / gridLength;
     } else {
@@ -109,7 +126,7 @@ $(document).on("keydown", function(event) {
                 currentImgMain.y = targetImg.y;
                 break;
             case 1: // 有障礙物(不可移動)
-                $("#talkBox").text("有山");
+                $("#talkBox").text("過不去");
                 break;
             case 2: // 終點(可移動)
                 $("#talkBox").text("抵達終點");
@@ -117,7 +134,7 @@ $(document).on("keydown", function(event) {
                 currentImgMain.y = targetImg.y;
                 break;
             case 3: // 敵人(不可移動)
-                $("#talkBox").text("哈摟");
+                $("#talkBox").text("AHOY!");
                 break;
 
         }
